@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Division 2 Night Time Checker</title>
+    </head>
+    <body>
+        <div>
+            Time checker created by Heath "Casperionx" Carruthers to determine how long you will have to wait till 9pm from any given date/time entered.
+        </div>
+        
+        <div>
+            <label for="tdinfuture">When do you want to find your closest 9pm start Time</label>
+            <input type="datetime-local" id="tdinfuture">
+            <br />
+            <button onclick="calc_time();">Calculate When Night time will be at specified Time</button>
+        </div>
+        <div id="result"></div>
+        <script>
+            let date_reference = Date.parse('2022-11-01T13:12:00Z'); // this is my point of reference
+            let resbox = document.getElementById("result");
+
+            let calc_time = function()
+            {
+                let timeToPlay = document.getElementById('tdinfuture').value; // this is users selected time to start
+
+                // convert local date time to ISO/UTC:
+                let ISOtd = new Date(timeToPlay).toISOString();
+                // convert ISOtd to milliseconds...
+                let ttp_ms = Date.parse(ISOtd);
+
+                // lets get the difference...
+                let time_diff = ((ttp_ms - date_reference)/1000)/60; // lets do ms to secs and mins conversion in one go...
+
+                console.log( time_diff );
+
+                // how many real time minutes in the current div day
+
+                let rt_mins = time_diff % 72;
+
+                console.log(`Mins in current day of Div 2 (real time) ${rt_mins}`);
+
+                let time_to_night = 66.5 - rt_mins;
+
+                
+                if ( time_to_night > 0 )
+                {
+                    resbox.innerText = "Real time mins to night: " + time_to_night;
+                    console.log(`Real time mins to night: ${time_to_night}`);
+                } else { 
+                    resbox.innerText = "You are already in night time...";
+                    console.log('You are already in night time');
+                }
+            }
+
+        </script>
+    </body>
+</html>
